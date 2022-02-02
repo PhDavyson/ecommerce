@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # TODO: remover debug toolbar
     "django.contrib.staticfiles",
+    'debug_toolbar',
+    'crispy_forms',
+    'produto',
+    'pedido',
+    'perfil',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,8 +55,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
     # TODO: remover debug toolbar
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
@@ -62,9 +63,11 @@ ROOT_URLCONF = 'loja.urls'
 
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -74,6 +77,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'my_filters': 'produto.templatestag.my_filters',
+            }
         },
     },
 ]
@@ -87,7 +93,7 @@ WSGI_APPLICATION = 'loja.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3")),
     }
 }
 
@@ -129,7 +135,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join('templates/static')
+    os.path.join('templates/static'),
 ]
 
 MEDIA_URL = '/media/'
@@ -155,7 +161,7 @@ SESSION_SAVE_EVERY_REQUEST = False
 
 # Para sessions em arquivos ao invés da base de dados
 # SESSION_ENGINE = "django.contrib.sessions.backends.file"
-# SESSION_FILE_PATH = '/home/luizotavio/Desktop/temp'
+# SESSION_FILE_PATH = '/home/phdavyson/Desktop/temp'
 
 
 # Default primary key field type
